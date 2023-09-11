@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+    <div class="example-wrapper">
+        <a href="http://localhost:8000/admin">Admin</a>
+        <a href="http://localhost:8000/login">Login</a>
+        <a href="http://localhost:8000/register">Register</a>
+        <a href="http://localhost:8000/logout">Logout</a>
+    </div>
+    <h1>
+        Latest article
+    </h1>
+    {% if result|length >2 %}
+        {% for x in 0..2 %}
+            <div>
+                <h3><a href="http://localhost:8000/article/{{ result[x].slug }}">{{ result[x].title }}</a></h3>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
