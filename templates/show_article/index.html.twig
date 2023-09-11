@@ -20,5 +20,11 @@
         <h3>{{ x.author|raw }}</h3>
         <p>{{ x.content|raw }}</p>
     {% endfor %}
-    {{ form(form) }}
+
+    {% if is_granted('ROLE_USER') %}
+        {{ form(form) }}
+
+    {% else %}
+    <h2>{{ form }}</h2>
+    {% endif %}
 {% endblock %}

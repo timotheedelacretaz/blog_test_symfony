@@ -23,19 +23,23 @@ class ShowArticleController extends AbstractController
             ['article_id' => $resultA->getId()],
             ['date' => 'ASC']
         );
-        $user = $this->getUser()->getUserIdentifier();
-        $comment = new Comment();
-        $comment->setArticleId($resultA);
-        $comment->setAuthor($user);
-        $y = (new \DateTime);
-        $comment->setDate($y);
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment = $form->getData();
-            $entityManager->persist($comment);
-            $entityManager->flush();
+        if ($this->isGranted('ROLE_USER')){
+            $user = $this->getUser()->getUserIdentifier();
+            $comment = new Comment();
+            $comment->setArticleId($resultA);
+            $comment->setAuthor($user);
+            $y = (new \DateTime);
+            $comment->setDate($y);
+            $form = $this->createForm(CommentType::class, $comment);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment = $form->getData();
+                $entityManager->persist($comment);
+                $entityManager->flush();
+            }
         }
+        else {$form = 'You have to be logged to write comment';}
+
 
         return $this->render('show_article/index.html.twig', [
             'resultA' => $resultA,

@@ -14,7 +14,7 @@ class HomeController extends AbstractController
     {
         $result = $articleRepository->findBy(
             [],
-            ['date' => 'ASC']
+            ['date' => 'DESC']
         );
         return $this->render('home/index.html.twig',[
             'result' => $result
