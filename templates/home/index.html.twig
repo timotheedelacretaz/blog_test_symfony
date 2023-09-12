@@ -4,25 +4,63 @@
 
 {% block body %}
     <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-        .navbar {background-color: black;color: white}
+        .homepage {display: flex; flex-direction: row}
+        .welcome {margin-right: 10px}
+        .latestarticle {float: right}
     </style>
+    <div class="homepage">
+        <div class="welcome">
+            <h2>Welcome to tim Blog</h2>
 
-    <h1>
-        Latest article
-    </h1>
-    {% if result|length >2 %}
-        {% for x in 0..2 %}
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ result[x].title }}</h5>
-                    <p class="card-text">{{ result[x].content }}</p>
-                    <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Sed a iaculis risus. Pellentesque risus enim, dapibus pharetra
+                hendrerit nec, vehicula in urna. Praesent tincidunt iaculis turpis,
+                a eleifend nisl luctus nec. Sed ut urna rhoncus massa dignissim vehicula.
+                Quisque ac odio in libero condimentum suscipit dapibus sed magna. Praesent sit
+                amet sem maximus, egestas tellus et, eleifend nisl. Vestibulum facilisis eu ligula
+                sit amet malesuada.</p>
+
+            <h3>Praesent blandit</h3>
+            <p>Quisque consequat dictum risus. Proin dapibus bibendum maximus.
+                Mauris sed faucibus risus. Donec bibendum dui sed leo varius vehicula.
+                Integer in nulla vehicula, tristique turpis ut, commodo nibh. Aliquam erat
+                volutpat. Praesent blandit varius erat eu mattis. Pellentesque malesuada sit amet
+                nisl eget posuere. Donec ut lectus facilisis, eleifend massa sit amet, ultricies neque.
+                Duis id neque dapibus, efficitur nulla ut, finibus felis. Vivamus faucibus lobortis
+                vulputate. Sed tristique eget tellus vitae pellentesque. Quisque placerat ex eget nisl
+                dignissim, eu mollis ex molestie. Pellentesque et dui facilisis, placerat leo in,
+                tristique turpis. Proin aliquet bibendum tortor. Suspendisse potenti.</p>
+
+            <h3>Suspendisse arcu</h3>
+            <p>Integer non dui varius, porttitor magna sit amet, ultricies erat. Nulla in ex hendrerit,
+                dapibus lorem vitae, feugiat nulla. Integer faucibus, purus in iaculis molestie, orci erat
+                vehicula sem, nec facilisis odio turpis vitae tortor. Interdum et malesuada fames ac ante
+                ipsum primis in faucibus. Mauris a gravida odio, quis viverra lorem. Aenean a massa nisl.
+                Donec in ex felis. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                Pellentesque dignissim euismod ex, ac vehicula nisi eleifend vitae. Mauris hendrerit
+                nibh eu turpis pellentesque, non molestie elit cursus. Vivamus sem ipsum, accumsan ac leo a,
+                efficitur fermentum lorem. Suspendisse arcu mauris, eleifend ut magna sed, sollicitudin
+                feugiat turpis.</p>
+        </div>
+        <div class="latestarticle">
+            <h1>
+                Latest article
+            </h1>
+            {% if result|length >2 %}
+                {% for x in 0..2 %}
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ result[x].title }}</h5>
+                            <p class="card-text">{{ result[x].content }}</p>
+                            <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+
 
 
 {% endblock %}

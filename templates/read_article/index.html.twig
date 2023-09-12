@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ReadArticleController!{% endblock %}
+
+{% block body %}
+<style>
+    .article {display: flex;flex-wrap: wrap;flex-direction: row;justify-content: space-around;align-items: center}
+    .card {margin: 6px;}
+</style>
+<div class="article">
+    {% for x in result %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ x.title }}</h5>
+                <p class="card-text" >{{ x.content|raw }}</p>
+                <a href="http://localhost:8000/article/{{ x.slug }}" class="btn btn-primary">Read more</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
