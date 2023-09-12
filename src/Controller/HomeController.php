@@ -16,6 +16,7 @@ class HomeController extends AbstractController
             [],
             ['date' => 'DESC']
         );
+
         return $this->render('home/index.html.twig',[
             'result' => $result
         ]);

@@ -6,23 +6,23 @@
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .navbar {background-color: black;color: white}
     </style>
-    <div class="example-wrapper">
-        <a href="http://localhost:8000/login">Login</a>
-        <a href="http://localhost:8000/register">Register</a>
-        <a href="http://localhost:8000/logout">Logout</a>
-        <a href="http://localhost:8000/admin">Admin</a>
-        <a href="http://localhost:8000/create/article">Write an article</a>
-    </div>
+
     <h1>
         Latest article
     </h1>
     {% if result|length >2 %}
         {% for x in 0..2 %}
-            <div>
-                <h3><a href="http://localhost:8000/article/{{ result[x].slug }}">{{ result[x].title }}</a></h3>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ result[x].title }}</h5>
+                    <p class="card-text">{{ result[x].content }}</p>
+                    <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
+                </div>
             </div>
         {% endfor %}
     {% endif %}
+
 
 {% endblock %}
