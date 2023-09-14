@@ -24,10 +24,11 @@ class ShowArticleController extends AbstractController
             ['date' => 'ASC']
         );
         if ($this->isGranted('ROLE_USER')){
-            $user = $this->getUser()->getUserIdentifier();
+            $user = $this->getUser();
             $comment = new Comment();
             $comment->setArticleId($resultA);
-            $comment->setAuthor($user);
+            $comment->setAuthor($user->getUserIdentifier());
+            $comment->setUserId($user);
             $y = (new \DateTime);
             $comment->setDate($y);
             $form = $this->createForm(CommentType::class, $comment);
