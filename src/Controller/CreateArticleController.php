@@ -24,9 +24,11 @@ class CreateArticleController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-            $article->setSlug($article->getTitle());
+            $slug = $article->getTitle();
+            $article->setSlug($slug);
             $entityManager->persist($article);
             $entityManager->flush();
+            return $this->redirect('/article/'.$slug.'');
         }
         return $this->render('create_article/index.html.twig', [
             'form'=>$form,

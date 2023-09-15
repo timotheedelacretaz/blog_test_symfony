@@ -8,11 +8,13 @@
     </style>
     <h1>{{ resultA.title }}</h1>
     <p>{{ resultA.content|raw }}</p>
+    <h4>écrit par:{{ author }}</h4>
     <h1>Commentaire</h1>
     {% for x in resultC %}
-        <h3>{{ x.author|raw }}</h3>
+        <h2>{{ x.author|raw }}</h2>
         <p>{{ x.content|raw }}</p>
     {% endfor %}
+
 
     {% if is_granted('ROLE_USER') %}
         {{ form(form) }}

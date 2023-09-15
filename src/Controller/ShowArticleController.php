@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowArticleController extends AbstractController
 {
     #[Route('/article/{slug}', name: 'show_article')]
-    public function index(ArticleRepository $articleRepository,CommentRepository $commentRepository,string $slug,Request $request,EntityManagerInterface $entityManager): Response
+    public function index(ArticleRepository $articleRepository,CommentRepository $commentRepository,UserRepository $userRepository, string $slug,Request $request,EntityManagerInterface $entityManager): Response
     {
         $resultA = $articleRepository->findOneBy(['slug' => $slug]);
         $resultC = $commentRepository->findBy(
             ['article_id' => $resultA->getId()],
             ['date' => 'ASC']
         );
+        $author = $userRepository->findOneBy(['id' => $resultA->getUserId()]);
         if ($this->isGranted('ROLE_USER')){
             $user = $this->getUser();
             $comment = new Comment();
@@ -37,6 +39,7 @@ class ShowArticleController extends AbstractController
                 $comment = $form->getData();
                 $entityManager->persist($comment);
                 $entityManager->flush();
+                return $this->redirect('/article/'.$resultA->getSlug().'');
             }
         }
         else {$form = 'You have to be logged to write comment';}
@@ -46,6 +49,7 @@ class ShowArticleController extends AbstractController
             'resultA' => $resultA,
             'resultC' => $resultC,
             'form' => $form,
+            'author' => $author->getEmail()
         ]);
     }
 }
