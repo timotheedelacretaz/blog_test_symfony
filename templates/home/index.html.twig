@@ -52,6 +52,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ result[x].title }}</h5>
                             <p class="card-text">{{ result[x].content|raw }}</p>
+                            <p>écrit le {{ result[x].date|date('d-m-Y') }}</p>
                             <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
                         </div>
                     </div>

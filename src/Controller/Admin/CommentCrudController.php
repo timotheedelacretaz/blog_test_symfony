@@ -28,6 +28,7 @@ class CommentCrudController extends AbstractCrudController
         return [
             TextField::new('author'),
             TextEditorField::new('content'),
+            DateTimeField::new('date')->hideOnForm(),
             IntegerField::new('article_id')->hideOnIndex(),
         ];
     }

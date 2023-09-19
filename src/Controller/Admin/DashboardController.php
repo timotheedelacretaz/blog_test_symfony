@@ -49,7 +49,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Home', 'fas fa-dashboard', 'app_home');
         yield MenuItem::linkToCrud('Article', 'fas fa-list', Article::class);
         yield MenuItem::linkToCrud('Comment', 'fas fa-list', Comment::class);
-        yield MenuItem::linkToCrud('User', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-list', User::class)
+            ->setPermission('ROLE_SUPER_ADMIN');
     }
 
 }

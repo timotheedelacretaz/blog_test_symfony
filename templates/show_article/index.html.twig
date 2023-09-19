@@ -8,11 +8,12 @@
     </style>
     <h1>{{ resultA.title }}</h1>
     <p>{{ resultA.content|raw }}</p>
-    <h4>écrit par:{{ author }}</h4>
+    <h4>écrit par:{{ author }} publié le: {{ resultA.date|date('d-m-Y') }} à {{ resultA.date|date('H:i:s') }}</h4>
     <h1>Commentaire</h1>
     {% for x in resultC %}
         <h2>{{ x.author|raw }}</h2>
         <p>{{ x.content|raw }}</p>
+        <p>écrit le :{{ x.date|date('d-m-Y') }} à {{ x.date|date('H:i:s') }}</p>
     {% endfor %}
 
 

@@ -49,7 +49,7 @@ class ShowArticleController extends AbstractController
             'resultA' => $resultA,
             'resultC' => $resultC,
             'form' => $form,
-            'author' => $author->getEmail()
+            'author' => $author->getEmail(),
         ]);
     }
 }
