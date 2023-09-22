@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Vote;
 use App\Form\CommentType;
+use App\Form\VoteType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
+use App\Repository\VoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,38 +20,64 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowArticleController extends AbstractController
 {
     #[Route('/article/{slug}', name: 'show_article')]
-    public function index(ArticleRepository $articleRepository,CommentRepository $commentRepository,UserRepository $userRepository, string $slug,Request $request,EntityManagerInterface $entityManager): Response
+    public function index(ArticleRepository $articleRepository,CommentRepository $commentRepository,VoteRepository $voteRepository, string $slug,Request $request,EntityManagerInterface $entityManager): Response
     {
         $resultA = $articleRepository->findOneBy(['slug' => $slug]);
+
         $resultC = $commentRepository->findBy(
             ['article_id' => $resultA->getId()],
             ['date' => 'ASC']
         );
+        $user = $this->getUser();
+        $voteuser = $voteRepository->findIfUserVoted($user,$resultA);
+
+
+
         if ($this->isGranted('ROLE_USER')){
-            $user = $this->getUser();
+            $vote = new Vote();
+            $vote->setUserId($user);
+            $vote->setArticleId($resultA);
+            $formVote = $this->createForm(VoteType::class,$vote);
+            $formVote->handleRequest($request);
+            if ($formVote->isSubmitted() && $formVote->isValid()) {
+                $vote = $formVote->getData();
+                if ($voteuser != null)
+                {
+                    $entityManager->remove($voteuser);
+                }
+                else {
+                    $entityManager->persist($vote);
+                }
+                $entityManager->flush();
+                return $this->redirect('/article/'.$resultA->getSlug().'');
+            }
             $comment = new Comment();
             $comment->setArticleId($resultA);
             $comment->setAuthor($user->getUserIdentifier());
             $comment->setUserId($user);
             $y = (new \DateTime);
             $comment->setDate($y);
-            $form = $this->createForm(CommentType::class, $comment);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $comment = $form->getData();
+            $formComment = $this->createForm(CommentType::class, $comment);
+            $formComment->handleRequest($request);
+            if ($formComment->isSubmitted() && $formComment->isValid()) {
+                $comment = $formComment->getData();
                 $entityManager->persist($comment);
                 $entityManager->flush();
                 return $this->redirect('/article/'.$resultA->getSlug().'');
             }
         }
-        else {$form = 'You have to be logged to write comment';}
+        else {
+            $formComment = 'You have to be logged to write comment';
+            $formVote = '';
+        }
 
 
 
         return $this->render('show_article/index.html.twig', [
             'resultA' => $resultA,
             'resultC' => $resultC,
-            'form' => $form,
+            'formComment' => $formComment,
+            'formVote' => $formVote,
         ]);
     }
 }
