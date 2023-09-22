@@ -20,6 +20,9 @@ class Article
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $chapeau = null;
+
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
     #[ORM\Column(length: 255)]
@@ -52,6 +55,17 @@ class Article
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+    public function getchapeau(): ?string
+    {
+        return $this->chapeau;
+    }
+
+    public function setchapeau(string $chapeau): static
+    {
+        $this->chapeau = $chapeau;
 
         return $this;
     }

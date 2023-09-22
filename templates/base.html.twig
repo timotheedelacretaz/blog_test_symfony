@@ -37,11 +37,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="http://localhost:8000/create/article">Write an article</a>
                     </li>
+                    {% if app.user.roles is defined %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/register">Register</a>
+                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/profile/{{ app.user.id }}">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="http://localhost:8000/logout">Logout</a>
@@ -49,6 +47,14 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="http://localhost:8000/admin">Admin</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/register">Register</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

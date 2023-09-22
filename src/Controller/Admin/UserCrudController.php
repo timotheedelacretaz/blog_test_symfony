@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -27,10 +28,12 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
 
+
         return [
             TextField::new('email'),
             TextField::new('password')
-                ->hideOnIndex(),
+                ->hideOnIndex()
+                ->setFormType(PasswordType::class),
             ArrayField::new('roles'),
         ];
     }
@@ -43,4 +46,6 @@ class UserCrudController extends AbstractCrudController
             ->setPermission(Action::BATCH_DELETE, 'ROLE_SUPER_ADMIN')
             ;
     }
+
+
 }

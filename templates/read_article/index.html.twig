@@ -12,7 +12,7 @@
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">{{ x.title }}</h5>
-                <p class="card-text" >{{ x.content|raw }}</p>
+                <p class="card-text" >{{ x.chapeau|raw }}</p>
                 <p>écrit le {{ x.date|date('d-m-Y') }}</p>
                 <a href="http://localhost:8000/article/{{ x.slug }}" class="btn btn-primary">Read more</a>
             </div>

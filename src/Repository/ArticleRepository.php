@@ -20,6 +20,17 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
+    public function findAllArticleById($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.user_id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
 
 //    /**

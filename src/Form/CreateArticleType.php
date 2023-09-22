@@ -17,6 +17,7 @@ class CreateArticleType extends AbstractType
     {
         $builder
             ->add('title',TextType::class)
+            ->add('chapeau',TextType::class)
             ->add('content',TextareaType::class)
             ->add('save',SubmitType::class
             )

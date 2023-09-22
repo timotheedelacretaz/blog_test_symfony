@@ -24,7 +24,6 @@ class ShowArticleController extends AbstractController
             ['article_id' => $resultA->getId()],
             ['date' => 'ASC']
         );
-        $author = $userRepository->findOneBy(['id' => $resultA->getUserId()]);
         if ($this->isGranted('ROLE_USER')){
             $user = $this->getUser();
             $comment = new Comment();
@@ -45,11 +44,11 @@ class ShowArticleController extends AbstractController
         else {$form = 'You have to be logged to write comment';}
 
 
+
         return $this->render('show_article/index.html.twig', [
             'resultA' => $resultA,
             'resultC' => $resultC,
             'form' => $form,
-            'author' => $author->getEmail(),
         ]);
     }
 }
