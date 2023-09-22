@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -30,6 +31,9 @@ class Article
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $upvote = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $user_id = null;
@@ -58,12 +62,12 @@ class Article
 
         return $this;
     }
-    public function getchapeau(): ?string
+    public function getChapeau(): ?string
     {
         return $this->chapeau;
     }
 
-    public function setchapeau(string $chapeau): static
+    public function setChapeau(string $chapeau): static
     {
         $this->chapeau = $chapeau;
 
@@ -105,6 +109,20 @@ class Article
 
         return $this;
     }
+
+    public function getUpvote(): ?int
+    {
+        return $this->upvote;
+    }
+
+    public function setUpvote(int $upvote): static
+    {
+        $this->upvote = $upvote;
+
+        return $this;
+    }
+
+
 
     public function getUserId(): ?User
     {

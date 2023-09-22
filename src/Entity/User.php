@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -23,6 +24,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 180, unique: true,nullable: true)]
+    private ?string $username = null;
+
+    #[ORM\Column(type: Types::TEXT,nullable: true)]
+    private ?string $content = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
+    private ?\DateTimeInterface $date = null;
+
+    #[ORM\Column(length: 180,nullable: true)]
+    private ?string $work = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -58,6 +71,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): static
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getWork(): ?string
+    {
+        return $this->work;
+    }
+
+    public function setWork(string $work): static
+    {
+        $this->work = $work;
 
         return $this;
     }

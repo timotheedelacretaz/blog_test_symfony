@@ -15,6 +15,8 @@ class ProfileController extends AbstractController
     public function index(string $slug,UserRepository $userRepository,ArticleRepository $articleRepository,CommentRepository $commentRepository): Response
     {
         $user = $userRepository->findOneBy(['id' => $slug]);
+        /*if ($userRepository->findUser($slug)->getId()==$slug){
+        }*/
         $article = $articleRepository->findAllArticleById($user->getId());
         $comment = $commentRepository->findAllCommentById($user->getId());
         return $this->render('profile/index.html.twig', [

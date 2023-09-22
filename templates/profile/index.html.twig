@@ -10,6 +10,9 @@
 
 <div class="example-wrapper">
     <h2>{{ user.email }}</h2>
+    <p>{{ user.work }}</p>
+    <p>{{ user.content }}</p>
+    <p>A rejoint le site le {{ user.date|date('d-m-Y') }}</p>
     <p>nombre d'article: {{ article|length }}</p>
     <p>nombre de commentaire: {{ comment|length }}</p>
     <h2>article: </h2>
