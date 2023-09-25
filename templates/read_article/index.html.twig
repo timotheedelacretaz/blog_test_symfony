@@ -18,7 +18,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ x.title }}</h5>
                 <p class="card-text" >{{ x.chapeau|raw }}</p>
-                <p>écrit le {{ x.date|date('d-m-Y') }}</p>
+                <p>écrit le {{ x.date|date('d-m-Y') }} par <a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.email }}</a></p>
                 <a href="http://localhost:8000/article/{{ x.slug }}" class="btn btn-primary">Read more</a>
             </div>
         </div>

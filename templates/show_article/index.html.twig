@@ -16,7 +16,7 @@
     <p>{{ resultA.content|raw }}</p>
 
     <div class="buttonSave">
-    {% if is_granted('ROLE_VOTER')%}
+    {% if is_granted('ROLE_VOTER') %}
         {{ form_start(formVote) }}
         {% if voteUser is null %}
             {{ form_row(formVote.Upvote,{
