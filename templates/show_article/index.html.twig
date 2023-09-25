@@ -5,15 +5,44 @@
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .recommended {color: #1ea471;float: right}
+        .buttonSave {float: right}
     </style>
+    {% if resultA.upvote >= 3 %}
+    <h2 class="recommended">Recommended</h2>
+    {% endif %}
     <h1>{{ resultA.title }}</h1>
     <h4>{{ resultA.chapeau|raw }}</h4>
     <p>{{ resultA.content|raw }}</p>
+
+    <div class="buttonSave">
+    {% if is_granted('ROLE_VOTER')%}
+        {{ form_start(formVote) }}
+        {% if voteUser is null %}
+            {{ form_row(formVote.Upvote,{
+                attr: {
+                    class: 'btn-success'
+                }
+            }) }}
+        {% else %}
+            {{ form_row(formVote.Upvote,{
+                label:'Unvote',
+                attr: {
+                    class: 'btn-danger'
+                }
+            }) }}
+        {% endif %}
+        {{ form_end(formVote) }}
+        </div>
+    {% endif %}
+
     <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.email }}</a>
         publié le: {{ resultA.date|date('d-m-Y') }} à {{ resultA.date|date('H:i:s') }}</h4>
-    {% if is_granted('ROLE_USER') %}
-    {{ form(formVote) }}
-    {% endif %}
+
+
+
+
+
     <h1>Commentaire</h1>
     {% for x in resultC %}
         <h2><a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.email}}</a></h2>
@@ -23,7 +52,8 @@
 
 
     {% if is_granted('ROLE_USER') %}
-        {{ form(formComment) }}
+        {{ form_start(formComment) }}
+        {{ form_end(formComment) }}
 
     {% else %}
     <h2>{{ formComment }}</h2>

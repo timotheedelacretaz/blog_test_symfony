@@ -6,10 +6,15 @@
 <style>
     .article {display: flex;flex-wrap: wrap;flex-direction: row;justify-content: space-around;align-items: center}
     .card {margin: 6px;}
+    .recommendedCard {border-color: #1ea471;border-width: 2px}
 </style>
 <div class="article">
     {% for x in result %}
-        <div class="card" style="width: 18rem;">
+        {% if x.upvote >=3 %}
+            <div class="card recommendedCard" style="width: 18rem;">
+        {% else %}
+                <div class="card" style="width: 18rem;">
+        {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ x.title }}</h5>
                 <p class="card-text" >{{ x.chapeau|raw }}</p>

@@ -32,6 +32,9 @@ class VoteRepository extends ServiceEntityRepository
             ;
     }
 
+
+
+
 //    /**
 //     * @return Vote[] Returns an array of Vote objects
 //     */

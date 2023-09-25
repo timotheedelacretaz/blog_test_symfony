@@ -6,7 +6,9 @@
     <style>
         .homepage {display: flex; flex-direction: row}
         .welcome {margin-right: 10px}
-        .latestarticle {float: right}
+        .recommendedArticle {float: right}
+        .latestArticle {float: right}
+        .recommendedCard {border-color: #1ea471;border-width: 2px}
     </style>
     <div class="homepage">
         <div class="welcome">
@@ -42,23 +44,43 @@
                 efficitur fermentum lorem. Suspendisse arcu mauris, eleifend ut magna sed, sollicitudin
                 feugiat turpis.</p>
         </div>
-        <div class="latestarticle">
-            <h1>
-                Latest article
-            </h1>
-            {% if result|length >2 %}
-                {% for x in 0..2 %}
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ result[x].title }}</h5>
-                            <p class="card-text">{{ result[x].chapeau|raw }}</p>
-                            <p>écrit le {{ result[x].date|date('d-m-Y') }} par <a href="http://localhost:8000/profile/{{ result[x].userid.id }}">{{ result[x].userid.email }}</a></p>
-                            <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
+        <div class="article">
+            <div class="recommendedArticle">
+                {% if 0 < recommended|length  %}
+                    <h1>
+                        Recommended article
+                    </h1>
+                    {% for x in recommended %}
+                        <div class="card recommendedCard" style="width: 18rem;">
+                            <div class="card-body ">
+                                <h5 class="card-title">{{ x.title }}</h5>
+                                <p class="card-text">{{ x.chapeau|raw }}</p>
+                                <p>écrit le {{ x.date|date('d-m-Y') }} par <a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.email }}</a></p>
+                                <a href="http://localhost:8000/article/{{ x.slug }}" class="btn btn-primary">Read more</a>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="latestArticle">
+                {% if result|length >2 %}
+                    <h1>
+                        Latest article
+                    </h1>
+                    {% for x in 0..2 %}
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ result[x].title }}</h5>
+                                <p class="card-text">{{ result[x].chapeau|raw }}</p>
+                                <p>écrit le {{ result[x].date|date('d-m-Y') }} par <a href="http://localhost:8000/profile/{{ result[x].userid.id }}">{{ result[x].userid.email }}</a></p>
+                                <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
+
     </div>
 
 

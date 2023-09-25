@@ -29,7 +29,7 @@ class ShowArticleController extends AbstractController
             ['date' => 'ASC']
         );
         $user = $this->getUser();
-        $voteuser = $voteRepository->findIfUserVoted($user,$resultA);
+        $voteUser = $voteRepository->findIfUserVoted($user,$resultA);
 
 
 
@@ -41,13 +41,16 @@ class ShowArticleController extends AbstractController
             $formVote->handleRequest($request);
             if ($formVote->isSubmitted() && $formVote->isValid()) {
                 $vote = $formVote->getData();
-                if ($voteuser != null)
+                if ($voteUser != null)
                 {
-                    $entityManager->remove($voteuser);
+                    $entityManager->remove($voteUser);
                 }
                 else {
                     $entityManager->persist($vote);
                 }
+                $entityManager->flush();
+                $numberUpvote = $resultA->setUpvote(count($voteRepository->findBy(['article_id' => $resultA->getId()])));
+                $entityManager->persist($numberUpvote);
                 $entityManager->flush();
                 return $this->redirect('/article/'.$resultA->getSlug().'');
             }
@@ -78,6 +81,7 @@ class ShowArticleController extends AbstractController
             'resultC' => $resultC,
             'formComment' => $formComment,
             'formVote' => $formVote,
+            'voteUser' => $voteUser,
         ]);
     }
 }

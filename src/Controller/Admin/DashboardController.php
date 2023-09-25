@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Entity\Vote;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -49,6 +50,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Home', 'fas fa-dashboard', 'app_home');
         yield MenuItem::linkToCrud('Article', 'fas fa-list', Article::class);
         yield MenuItem::linkToCrud('Comment', 'fas fa-list', Comment::class);
+        yield MenuItem::linkToCrud('Vote', 'fas fa-list', Vote::class)
+            ->setPermission('ROLE_SUPER_ADMIN');
         yield MenuItem::linkToCrud('User', 'fas fa-list', User::class)
             ->setPermission('ROLE_SUPER_ADMIN');
     }

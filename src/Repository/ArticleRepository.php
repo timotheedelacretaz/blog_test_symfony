@@ -31,6 +31,28 @@ class ArticleRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findAllRecommendedArticle(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.upvote >= 3')
+            ->orderBy('u.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllNotRecommendedArticle(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.upvote < 3')
+            ->orderBy('u.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+
 
 //    /**
 //     * @return Article[] Returns an array of Article objects
