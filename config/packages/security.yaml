@@ -22,6 +22,8 @@ security:
             logout:
                 path: app_logout
             login_throttling: null
+            access_token:
+                token_handler: App\Security\AccessTokenHandler
         secured_area:
             form_login:
                 enable_csrf: true
@@ -42,7 +44,6 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/create/article, roles: ROLE_USER }
-         - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
