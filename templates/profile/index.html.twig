@@ -11,21 +11,40 @@
 </style>
 
 <div class="example-wrapper">
+
     {% if app.user.id is defined %}
         {% if app.user.id == verify %}
-            <p>
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    Modify Profile
+            <div class="float-end">
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Edit
                 </button>
-            </p>
-            <div class="collapse" id="collapseExample">
-                {{ form_start(formUser) }}
-                {{ form_row(formUser.username) }}
-                {{ form_row(formUser.work) }}
-                {{ form_row(formUser.content) }}
-                {{ form_row(formUser.save) }}
-                {{ form_end(formUser) }}
             </div>
+
+            <!-- Modal -->
+            {{ form_start(formUser) }}
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modify Profile</h5>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ form_row(formUser.username) }}
+                            {{ form_row(formUser.work) }}
+                            {{ form_row(formUser.content) }}
+                        </div>
+                        <div class="modal-footer">
+                            {{ form_row(formUser.save) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(formUser) }}
+
 
 
 

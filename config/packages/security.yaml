@@ -22,8 +22,6 @@ security:
             logout:
                 path: app_logout
             login_throttling: null
-            access_token:
-                token_handler: App\Security\AccessTokenHandler
         secured_area:
             form_login:
                 enable_csrf: true
