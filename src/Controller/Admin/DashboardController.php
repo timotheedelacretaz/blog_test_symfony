@@ -6,37 +6,58 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\User;
 use App\Entity\Vote;
+use App\Repository\UserRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardController extends AbstractDashboardController
 {
+
+    public function __construct(
+        private ChartBuilderInterface $chartBuilder,
+        private UserRepository $userRepository,
+    ) {
+    }
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        $r = $this->userRepository->findUserBetweenDate('2023-01-01 01:01:01','2023-12-30 01:01:01' );
 
-        return $this->redirect($adminUrlGenerator->setController(ArticleCrudController::class)->generateUrl());
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart->setData([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','Septembre','October','November','December'],
+            'datasets' => [
+                [
+                    'label' => "Nombre d'User",
+                    'backgroundColor' => 'rgb(255, 180, 132)',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => [0, 10, 5, 2, 20, 30, 45],
+                ],
+            ],
+        ]);
 
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
+        $chart->setOptions([
+            'scales' => [
 
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 100,
+                ],
+            ],
+        ]);
 
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
+        return $this->render('admin_dashboard/index.html.twig',[
+            'chart' => $chart,
+        ]);
+
+
     }
 
     public function configureDashboard(): Dashboard
@@ -48,6 +69,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToRoute('Home', 'fas fa-dashboard', 'app_home');
+        yield MenuItem::linkToRoute('Admin Home', 'fas fa-dashboard', 'admin');
         yield MenuItem::linkToCrud('Article', 'fas fa-list', Article::class);
         yield MenuItem::linkToCrud('Comment', 'fas fa-list', Comment::class);
         yield MenuItem::linkToCrud('Vote', 'fas fa-list', Vote::class)
@@ -55,5 +77,14 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('User', 'fas fa-list', User::class)
             ->setPermission('ROLE_SUPER_ADMIN');
     }
+
+    public function configureAssets(): Assets
+    {
+
+
+        return parent::configureAssets()
+            ->addWebpackEncoreEntry('app');
+    }
+
 
 }

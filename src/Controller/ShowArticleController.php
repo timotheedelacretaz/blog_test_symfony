@@ -32,7 +32,6 @@ class ShowArticleController extends AbstractController
         $voteUser = $voteRepository->findIfUserVoted($user,$resultA);
 
 
-
         if ($this->isGranted('ROLE_USER')){
             $vote = new Vote();
             $vote->setUserId($user);
@@ -83,5 +82,22 @@ class ShowArticleController extends AbstractController
             'formVote' => $formVote,
             'voteUser' => $voteUser,
         ]);
+    }
+    #[Route('/article/delete/{slug}',name: 'delete_article' ,methods: ['GET', 'DELETE'])]
+    public function deleteArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
+    {
+        $article = $articleRepository->findOneBy(['slug' => $slug]);
+        $entityManager->remove($article);
+        $entityManager->flush();
+        return $this->redirect('/deletedArticle');
+    }
+
+    #[Route('/comment/delete/{slug}/{slug2}',name: 'delete_comment' ,methods: ['GET', 'DELETE'])]
+    public function deleteComment(EntityManagerInterface $entityManager,string $slug, string $slug2,ArticleRepository $articleRepository,CommentRepository $commentRepository): Response
+    {
+        $comment = $commentRepository->findOneBy(['id' => $slug]);
+        $entityManager->remove($comment);
+        $entityManager->flush();
+        return $this->redirect('/article/'.$slug2.'');
     }
 }

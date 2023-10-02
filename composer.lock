@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80b77425bbbe7feebabc3b9f5134ad9f",
+    "content-hash": "4135dcfdbf3cf5573d533d39cfeea7fc",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -6346,7 +6346,7 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.11.1",
+            "version": "v2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
@@ -6394,7 +6394,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.11.1"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.12.0"
             },
             "funding": [
                 {
@@ -7002,7 +7002,7 @@
         },
         {
             "name": "symfony/ux-chartjs",
-            "version": "v2.11.1",
+            "version": "v2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-chartjs.git",
@@ -7062,7 +7062,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-chartjs/tree/v2.11.1"
+                "source": "https://github.com/symfony/ux-chartjs/tree/v2.12.0"
             },
             "funding": [
                 {

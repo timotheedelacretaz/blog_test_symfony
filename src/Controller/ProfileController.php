@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\DeleteUserType;
 use App\Form\ProfileType;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
@@ -12,12 +13,13 @@ use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
     #[Route('/profile/{slug}', name: 'app_profile')]
-    public function index(string $slug,EntityManagerInterface $entityManager,UserRepository $userRepository,ArticleRepository $articleRepository,CommentRepository $commentRepository,Request $request): Response
+    public function index(string $slug,Session $session,EntityManagerInterface $entityManager,UserRepository $userRepository,ArticleRepository $articleRepository,CommentRepository $commentRepository,Request $request): Response
     {
         $user = $userRepository->findOneBy(['id' => $slug]);
 
@@ -32,11 +34,27 @@ class ProfileController extends AbstractController
             $entityManager->flush();
             return $this->redirect('/profile/'.$slug.'');
         }
+
+        $formDeleteUser = $this->createForm(DeleteUserType::class,$userMod);
+        $formDeleteUser->handleRequest($request);
+        if ($formDeleteUser->isSubmitted() && $formDeleteUser->isValid()) {
+            $userMod = $formDeleteUser->getData();
+            $entityManager->remove($userMod);
+            $entityManager->flush();
+            $session = $request->getSession()->getName();
+            $request->getSession()->remove($session);
+            $session = new Session();
+            $session->invalidate();
+            return $this->redirect('/deletedUser');
+        }
+
+
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'article' => $article,
             'comment' => $comment,
             'formUser' => $formUser,
+            'formDeleteUser' => $formDeleteUser,
             'verify' => $slug
         ]);
     }

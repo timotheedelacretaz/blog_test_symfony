@@ -11,6 +11,40 @@
     {% if resultA.upvote >= 3 %}
     <h2 class="recommended">Recommended</h2>
     {% endif %}
+    {% if app.user.id is defined %}
+        {% if app.user.id == resultA.userid.id %}
+
+
+
+            <div class="float-end">
+
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal">
+                    Delete Article
+                </button>
+            </div>
+
+            <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Article</h5>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete your Article</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/article/delete/{{ resultA.slug }}" class="btn btn-danger" style="float: right">Delete Article</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endif %}
+    {% endif %}
     <h1>{{ resultA.title }}</h1>
     <h4>{{ resultA.chapeau|raw }}</h4>
     <p>{{ resultA.content|raw }}</p>
@@ -33,9 +67,9 @@
             }) }}
         {% endif %}
         {{ form_end(formVote) }}
-        </div>
-    {% endif %}
 
+    {% endif %}
+    </div>
     <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.email }}</a>
         publié le: {{ resultA.date|date('d-m-Y') }} à {{ resultA.date|date('H:i:s') }}</h4>
 
@@ -45,16 +79,53 @@
 
     <h1>Commentaire</h1>
     {% for x in resultC %}
+
+
         <h2><a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.email}}</a></h2>
+
+        {% if app.user.id is defined %}
+            {% if app.user.id == x.userid.id %}
+
+
+                <div class="float-end">
+
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal2">
+                        Delete Comment
+                    </button>
+                </div>
+
+                <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete Comment</h5>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete your Comment</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/comment/delete/{{ x.id }}/{{ resultA.slug }}" class="btn btn-danger" style="float: right">Delete Comment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            {% endif %}
+        {% endif %}
+
         <p>{{ x.content|raw }}</p>
         <p>écrit le :{{ x.date|date('d-m-Y') }} à {{ x.date|date('H:i:s') }}</p>
+
     {% endfor %}
 
 
     {% if is_granted('ROLE_USER') %}
         {{ form_start(formComment) }}
         {{ form_end(formComment) }}
-
     {% else %}
     <h2>{{ formComment }}</h2>
     {% endif %}

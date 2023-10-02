@@ -51,6 +51,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ;
     }
 
+    public function findUserBetweenDate($value,$value2): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.date BETWEEN :val AND :val2')
+            ->setParameter('val', $value)
+            ->setParameter('val2',$value2)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

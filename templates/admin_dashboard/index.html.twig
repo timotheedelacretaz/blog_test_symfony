@@ -1,0 +1,92 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+
+
+{% block sidebar %}
+
+    <header class="main-header">
+        <nav class="navbar" role="navigation">
+            <div id="header-logo">
+                <a class="logo" title="Blog Dashboard" href="/admin">
+                    <span class="logo-custom">Blog Dashboard</span>
+                    <span class="logo-compact">
+                        <i class="fas fa-home"></i>
+                    </span>
+                </a>
+            </div>
+        </nav>
+    </header>
+    <nav id="main-menu">
+        <ul class="menu">
+            <li class="menu-item">
+                <a href="http://localhost:8000/admin?routeName=app_home" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                    <i class="menu-icon fa-fw fas fa-dashboard">
+
+                    </i>
+                    <span class="menu-item-label position-relative">Home</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="http://localhost:8000/admin?routeName=admin" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                    <i class="menu-icon fa-fw fas fa-dashboard">
+
+                    </i>
+                    <span class="menu-item-label position-relative">Admin Home</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CArticleCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                    <i class="menu-icon fa-fw fas fa-list">
+
+                    </i>
+                    <span class="menu-item-label position-relative">Article</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommentCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                    <i class="menu-icon fa-fw fas fa-list">
+
+                    </i>
+                    <span class="menu-item-label position-relative">Comment</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CVoteCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                    <i class="menu-icon fa-fw fas fa-list">
+
+                    </i>
+                    <span class="menu-item-label position-relative">Vote</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CUserCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                    <i class="menu-icon fa-fw fas fa-list">
+
+                    </i>
+                    <span class="menu-item-label position-relative">User</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block main %}
+
+    <section class="main">
+        <div class="content-wrapper">
+            <article class="content">
+                <section class="content-header">
+                    <div class="content-header-title">
+                        <h1 class="title">Total User chart</h1>
+                    </div>
+                </section>
+                <section id="main" class="content-body">
+                    <div class="content">
+                        {{ render_chart(chart) }}
+                    </div>
+                </section>
+            </article>
+        </div>
+    </section>
+
+{% endblock %}
