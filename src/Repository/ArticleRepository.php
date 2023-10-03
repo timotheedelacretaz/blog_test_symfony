@@ -50,6 +50,17 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function findAllGreaterThanDate($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.date > :val')
+            ->setParameter('val',$value)
+            ->orderBy('u.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findArticleBetweenDate($value,$value2): array
     {
         return $this->createQueryBuilder('u')

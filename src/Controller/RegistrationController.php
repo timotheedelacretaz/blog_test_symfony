@@ -13,6 +13,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
@@ -38,13 +39,17 @@ class RegistrationController extends AbstractController
 
             $email = (new Email())
                 ->from('hello@example.com')
-                ->to('timothee.delacretaz@jobtrek.com')
+                ->to($user->getEmail())
                 //->cc('cc@example.com')
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')
                 //->priority(Email::PRIORITY_HIGH)
-                ->subject('tim blog signup')
-                ->text('thanks '.$user->getUsername().' for the signup');
+                ->subject('tim blog register')
+                ->html('
+                <h3>tim blog registration complete</h3>
+                <p>thanks <strong>'.$user->getUsername().'</strong> for the register</p>
+                <a href="http://localhost:8000"><button class="btn btn-link">Go to Tim blog</button></a>
+                ');
             $mailer->send($email);
 
             return $this->redirectToRoute('app_home');

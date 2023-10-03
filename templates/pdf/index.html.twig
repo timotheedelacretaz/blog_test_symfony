@@ -1,0 +1,28 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>{{ resultA.title }}</title>
+</head>
+<body>
+<div style="margin: 0 auto;display: block;width: 500px">
+    <div>
+        <h1>
+            {{ resultA.title }}
+        </h1>
+        <h4>
+            {{ resultA.chapeau|raw }}
+        </h4>
+        <p>
+            {{ resultA.content|raw }}
+        </p>
+        <div>
+            <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.email }}</a>
+                publié le: {{ resultA.date|date('d-m-Y') }} à {{ resultA.date|date('H:i:s') }}</h4>
+        </div>
+    </div>
+</div>
+</body>
+</html>

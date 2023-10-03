@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Vote;
 use App\Repository\ArticleRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -25,12 +26,31 @@ class DashboardController extends AbstractDashboardController
         private ChartBuilderInterface $chartBuilder,
         private UserRepository $userRepository,
         private ArticleRepository $articleRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $format = 'm';
+        $id = $this->getUser();
+        $user = $this->userRepository->findOneBy(['id' => $id]);
+        if ($user->getDateVisitedAdmin() == null)
+            {
+                $d = new \DateTime();
+            }
+        else {
+            $d =  $user->getDateVisitedAdmin();
+        }
+        $a = $this->articleRepository->findAllGreaterThanDate($d);
+        $u = $this->articleRepository->findAllGreaterThanDate($d);
+
+        $date = new \DateTime();
+        $user->setDateVisitedAdmin($date);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+
+        $format = 'm-Y';
         $r = $this->userRepository->findUserBetweenDate('2023-01-01 01:01:01','2023-12-30 01:01:01' );
         $labels = [];
         $data = [];
@@ -127,6 +147,8 @@ class DashboardController extends AbstractDashboardController
         return $this->render('admin_dashboard/index.html.twig',[
             'chart' => $chart,
             'chart2' => $chart2,
+            'a' => $a,
+            'u' => $u,
         ]);
 
 
