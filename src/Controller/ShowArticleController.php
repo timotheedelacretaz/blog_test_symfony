@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
 
 class ShowArticleController extends AbstractController
 {
@@ -75,6 +76,10 @@ class ShowArticleController extends AbstractController
 
 
 
+
+
+
+
         return $this->render('show_article/index.html.twig', [
             'resultA' => $resultA,
             'resultC' => $resultC,
@@ -100,4 +105,22 @@ class ShowArticleController extends AbstractController
         $entityManager->flush();
         return $this->redirect('/article/'.$slug2.'');
     }
+
+
+    #[Route('/article/pdf/{slug}',name: 'pdf' ,methods: ['GET'])]
+    public function pdf(string $slug,ArticleRepository $articleRepository): Response
+    {
+        $resultA = $articleRepository->findOneBy(['slug' => $slug]);
+        $html =  $this->renderView('pdf/index.html.twig', [
+            'resultA' => $resultA,
+        ]);
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $dompdf->stream('resume', ["Attachment" => false]);
+        exit(0);
+
+    }
+
+
 }

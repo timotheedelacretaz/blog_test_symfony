@@ -50,22 +50,24 @@
                     <span class="menu-item-label position-relative">Comment</span>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CVoteCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
-                    <i class="menu-icon fa-fw fas fa-list">
+            {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+                <li class="menu-item">
+                    <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CVoteCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                        <i class="menu-icon fa-fw fas fa-list">
 
-                    </i>
-                    <span class="menu-item-label position-relative">Vote</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CUserCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
-                    <i class="menu-icon fa-fw fas fa-list">
+                        </i>
+                        <span class="menu-item-label position-relative">Vote</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="http://localhost:8000/admin?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CUserCrudController" class="menu-item-contents" target="_self" rel referrerpolicy="origin-when-cross-origin">
+                        <i class="menu-icon fa-fw fas fa-list">
 
-                    </i>
-                    <span class="menu-item-label position-relative">User</span>
-                </a>
-            </li>
+                        </i>
+                        <span class="menu-item-label position-relative">User</span>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </nav>
 {% endblock %}
@@ -73,6 +75,26 @@
 {% block main %}
 
     <section class="main" >
+        <article class="content" >
+            <section class="content-header">
+            </section>
+            <section id="main" class="content-body">
+                <h4>Nombre d'article crée depuis votre dernière visite : {{ a|length }}</h4>
+                <h4>Nombre d'utilisateur crée depuis votre dernière visite : {{ u|length }}</h4>
+            </section>
+        </article>
+        <article class="content">
+            <section class="content-header">
+                <div class="content-header-title">
+                    <h1 class="title">Number of Article created per month</h1>
+                </div>
+            </section>
+            <section id="main" class="content-body">
+                <div class="chart-container" style="position: relative;height: 24vh;width: 60vw">
+                    {{ render_chart(chart2,{'id': 'chart2'}) }}
+                </div>
+            </section>
+        </article>
         <article class="content" >
             <section class="content-header">
                 <div class="content-header-title">
@@ -85,19 +107,6 @@
                 </div>
             </section>
         </article>
-        <article class="content">
-            <section class="content-header">
-                <div class="content-header-title">
-                    <h1 class="title">Number of Article per month</h1>
-                </div>
-            </section>
-            <section id="main" class="content-body">
-                <div class="chart-container" style="position: relative;height: 24vh;width: 60vw">
-                    {{ render_chart(chart2,{'id': 'chart2'}) }}
-                </div>
-            </section>
-        </article>
-
     </section>
 
 

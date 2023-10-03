@@ -34,6 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,nullable: true)]
+    private ?\DateTimeInterface $dateVisitedAdmin = null;
+
     #[ORM\Column(length: 180,nullable: true)]
     private ?string $work = null;
 
@@ -111,6 +114,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getDateVisitedAdmin(): ?\DateTimeInterface
+    {
+        return $this->dateVisitedAdmin;
+    }
+
+    public function setDateVisitedAdmin(\DateTimeInterface $dateVisitedAdmin): static
+    {
+        $this->dateVisitedAdmin = $dateVisitedAdmin;
+
+        return $this;
+    }
+
 
     public function getWork(): ?string
     {

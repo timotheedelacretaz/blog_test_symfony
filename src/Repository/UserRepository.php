@@ -63,6 +63,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ;
     }
 
+    public function findAllGreaterThanDate($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.date > :val')
+            ->setParameter('val',$value)
+            ->orderBy('u.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
