@@ -57,6 +57,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere('u.date BETWEEN :val AND :val2')
             ->setParameter('val', $value)
             ->setParameter('val2',$value2)
+            ->orderBy('u.date','ASC')
             ->getQuery()
             ->getResult()
             ;

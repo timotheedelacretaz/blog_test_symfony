@@ -50,7 +50,17 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
+    public function findArticleBetweenDate($value,$value2): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.date BETWEEN :val AND :val2')
+            ->setParameter('val', $value)
+            ->setParameter('val2',$value2)
+            ->orderBy('u.date','ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
 
 

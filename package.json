@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "doctrine": "^3.0.0",
+        "stimulus-chartjs": "^5.0.0",
         "symfony": "^0.0.1"
     }
 }

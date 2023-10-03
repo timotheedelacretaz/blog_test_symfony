@@ -72,21 +72,35 @@
 
 {% block main %}
 
-    <section class="main">
-        <div class="content-wrapper">
-            <article class="content">
-                <section class="content-header">
-                    <div class="content-header-title">
-                        <h1 class="title">Total User chart</h1>
-                    </div>
-                </section>
-                <section id="main" class="content-body">
-                    <div class="content">
-                        {{ render_chart(chart) }}
-                    </div>
-                </section>
-            </article>
-        </div>
+    <section class="main" >
+        <article class="content" >
+            <section class="content-header">
+                <div class="content-header-title">
+                    <h1 class="title">Number of registration per month</h1>
+                </div>
+            </section>
+            <section id="main" class="content-body">
+                <div class="chart-container" style="position: relative;height: 24vh;width: 60vw">
+                    {{ render_chart(chart,{'id': 'chart'}) }}
+                </div>
+            </section>
+        </article>
+        <article class="content">
+            <section class="content-header">
+                <div class="content-header-title">
+                    <h1 class="title">Number of Article per month</h1>
+                </div>
+            </section>
+            <section id="main" class="content-body">
+                <div class="chart-container" style="position: relative;height: 24vh;width: 60vw">
+                    {{ render_chart(chart2,{'id': 'chart2'}) }}
+                </div>
+            </section>
+        </article>
+
     </section>
+
+
+
 
 {% endblock %}
