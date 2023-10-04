@@ -4,9 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\ReportArticle;
+use App\Entity\ReportComment;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
+use App\Repository\ReportArticleRepository;
+use App\Repository\ReportCommentRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -26,6 +31,7 @@ class DashboardController extends AbstractDashboardController
         private ChartBuilderInterface $chartBuilder,
         private UserRepository $userRepository,
         private ArticleRepository $articleRepository,
+        private CommentRepository $commentRepository,
         private EntityManagerInterface $entityManager,
     ) {
     }
@@ -143,14 +149,18 @@ class DashboardController extends AbstractDashboardController
                 ],
             ],
         ]);
+        $rA = $this->articleRepository->findAllReported();
+        $rC = $this->commentRepository->findAllReported();
+
 
         return $this->render('admin_dashboard/index.html.twig',[
             'chart' => $chart,
             'chart2' => $chart2,
             'a' => $a,
             'u' => $u,
+            'rA' => $rA,
+            'rC' => $rC,
         ]);
-
 
     }
 
@@ -166,6 +176,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Admin Home', 'fas fa-dashboard', 'admin');
         yield MenuItem::linkToCrud('Article', 'fas fa-list', Article::class);
         yield MenuItem::linkToCrud('Comment', 'fas fa-list', Comment::class);
+        yield MenuItem::linkToCrud('Report Article', 'fas fa-list', ReportArticle::class)
+            ->setPermission('ROLE_SUPER_ADMIN');
+        yield MenuItem::linkToCrud('Report Comment', 'fas fa-list', ReportComment::class)
+            ->setPermission('ROLE_SUPER_ADMIN');
         yield MenuItem::linkToCrud('Vote', 'fas fa-list', Vote::class)
             ->setPermission('ROLE_SUPER_ADMIN');
         yield MenuItem::linkToCrud('User', 'fas fa-list', User::class)
@@ -178,6 +192,23 @@ class DashboardController extends AbstractDashboardController
 
         return parent::configureAssets()
             ->addWebpackEncoreEntry('app');
+    }
+
+    #[Route('/admin/comment/delete/{slug}',name: 'delete_admin_comment' ,methods: ['GET', 'DELETE'])]
+    public function deleteAdminComment(EntityManagerInterface $entityManager,string $slug,CommentRepository $commentRepository): Response
+    {
+        $comment = $commentRepository->findOneBy(['id' => $slug]);
+        $entityManager->remove($comment);
+        $entityManager->flush();
+        return $this->redirect('http://localhost:8000/admin');
+    }
+    #[Route('/admin/article/delete/{slug}',name: 'delete_admin_article' ,methods: ['GET', 'DELETE'])]
+    public function deleteAdminArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
+    {
+        $article = $articleRepository->findOneBy(['slug' => $slug]);
+        $entityManager->remove($article);
+        $entityManager->flush();
+        return $this->redirect('http://localhost:8000/admin');
     }
 
 

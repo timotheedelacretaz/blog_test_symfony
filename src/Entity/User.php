@@ -58,11 +58,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Vote::class)]
     private Collection $votes;
 
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: ReportArticle::class, orphanRemoval: true)]
+    private Collection $reportArticles;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: ReportComment::class, orphanRemoval: true)]
+    private Collection $reportComments;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->reportArticles = new ArrayCollection();
+        $this->reportComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -280,6 +288,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($vote->getUserId() === $this) {
                 $vote->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportArticle>
+     */
+    public function getReportArticles(): Collection
+    {
+        return $this->reportArticles;
+    }
+
+    public function addReportArticle(ReportArticle $reportArticle): static
+    {
+        if (!$this->reportArticles->contains($reportArticle)) {
+            $this->reportArticles->add($reportArticle);
+            $reportArticle->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportArticle(ReportArticle $reportArticle): static
+    {
+        if ($this->reportArticles->removeElement($reportArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($reportArticle->getUserId() === $this) {
+                $reportArticle->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportComment>
+     */
+    public function getReportComments(): Collection
+    {
+        return $this->reportComments;
+    }
+
+    public function addReportComment(ReportComment $reportComment): static
+    {
+        if (!$this->reportComments->contains($reportComment)) {
+            $this->reportComments->add($reportComment);
+            $reportComment->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportComment(ReportComment $reportComment): static
+    {
+        if ($this->reportComments->removeElement($reportComment)) {
+            // set the owning side to null (unless already changed)
+            if ($reportComment->getUserId() === $this) {
+                $reportComment->setUserId(null);
             }
         }
 

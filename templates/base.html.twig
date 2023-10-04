@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
 
+
        {% block stylesheets %}
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
             <link rel="stylesheet" href="/bundles/easyadmin/app.f5b3a5e3.css">
@@ -21,52 +22,70 @@
         {% endblock %}
     </head>
     <style>
-        .all {margin: 20px}
+        h1 {font-size: 2.2em}
+        h2 {font-size: 2.1em}
+        h3 {font-size: 2em}
+        h4 {font-size: 1.9em}
+        h5 {font-size: 1.8em}
+        h6 {font-size: 1.3em}
+        p {font-size: 1.3em}
         .navbar-toggler {margin-left: 20px}
         .nav-item{margin-left: 20px}
+        .allg {margin: 20px;}
     </style>
     <body>
+        <div class="all ">
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/read/article">Article</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/create/article">Write an article</a>
-                    </li>
-                    {% if app.user.roles is defined %}
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/profile/{{ app.user.id }}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/logout">Logout</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/admin">Admin</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost:8000/register">Register</a>
-                    </li>
-                    {% endif %}
-                </ul>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/"><p>Home</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/read/article"><p>Article</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/create/article"><p>Write an article</p></a>
+                        </li>
+                        {% if app.user.roles is defined %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/profile/{{ app.user.id }}"><p>Profile</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/logout"><p>Logout</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/admin"><p>Admin</p></a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/login"><p>Login</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:8000/register"><p>Register</p></a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="allg">
+            {% block body %}{% endblock %}
             </div>
-        </nav>
+            <div class="container  content-footer">
+                <footer class=" d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                    <a href="https://github.com/timotheedelacretaz"><p class="col-md-4 mb-0 text-muted">&copy; 2023 Timothee Delacratez</p></a>
 
-        <div class="all">
-        {% block body %}{% endblock %}
+                    <ul class="nav col-md-4 justify-content-end">
+                        <li class="nav-item"><a href="http://localhost:8000" class="nav-link px-2 text-muted"><p>Home</p></a></li>
+                    </ul>
+                </footer>
+            </div>
         </div>
     </body>
 </html>

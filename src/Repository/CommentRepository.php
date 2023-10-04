@@ -30,6 +30,16 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function findAllReported(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.report > 0')
+            ->orderBy('u.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
 //    /**
 //     * @return Comment[] Returns an array of Comment objects
