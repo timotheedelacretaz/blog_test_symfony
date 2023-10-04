@@ -123,9 +123,16 @@ class ShowArticleController extends AbstractController
     public function deleteArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->findOneBy(['slug' => $slug]);
-        $entityManager->remove($article);
-        $entityManager->flush();
-        return $this->redirect('/deletedArticle');
+        if ($this->getUser() == $article)
+        {
+            $entityManager->remove($article);
+            $entityManager->flush();
+            return $this->redirect('/deletedArticle');
+        }
+        else {
+            return $this->redirect('/');
+        }
+
     }
 
 
@@ -134,9 +141,15 @@ class ShowArticleController extends AbstractController
     public function deleteComment(EntityManagerInterface $entityManager,string $slug, string $slug2,ArticleRepository $articleRepository,CommentRepository $commentRepository): Response
     {
         $comment = $commentRepository->findOneBy(['id' => $slug]);
-        $entityManager->remove($comment);
-        $entityManager->flush();
-        return $this->redirect('/article/'.$slug2.'');
+        if ($this->getUser() == $comment)
+        {
+            $entityManager->remove($comment);
+            $entityManager->flush();
+            return $this->redirect('/deletedArticle');
+        }
+        else {
+            return $this->redirect('/article/'.$slug2.'');
+        }
     }
 
     #[Route('/comment/report/{slug}/{slug2}',name: 'report_comment' ,methods: ['GET'])]
