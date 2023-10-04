@@ -7,9 +7,10 @@
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
         .recommended {color: #1ea471;float: right}
         .buttonSave {float: right}
+        p {font-}
     </style>
     {% if app.user.id is defined %}
-        {% if app.user.id == resultA.userid.id %}
+        {% if app.user.id == resultA.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles %}
 
 
 
@@ -46,8 +47,10 @@
         <h2 class="recommended">Recommended</h2>
     {% endif %}
     <h1>{{ resultA.title }}</h1>
-    <h4>{{ resultA.chapeau|raw }}</h4>
-    <p>{{ resultA.content|raw }}</p>
+    <h6>{{ resultA.chapeau|raw }}</h6>
+    <hr>
+    <h6>{{ resultA.content|raw }}</h6>
+
 
     <div class="buttonSave ms-2">
     {% if is_granted('ROLE_VOTER') %}
@@ -69,11 +72,59 @@
         {{ form_end(formVote) }}
 
     {% endif %}
+
     </div>
+    {% if is_granted('ROLE_VOTER') %}
+    <div>
+
+
+
+        <div class="float-end">
+
+            <button type="button" class="btn btn-danger ms-2" data-toggle="modal" data-target="#Modal4">
+                Report
+            </button>
+        </div>
+
+        <div class="modal fade" id="Modal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Report Comment</h5>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Are you sure you want to report this Comment</h3>
+                        <hr>
+                        <h1>{{ resultA.title }}</h1>
+                        <h4>{{ resultA.chapeau|raw }}</h4>
+                        <p>{{ resultA.content }}</p>
+                        <hr>
+                        <h5>you can't undo it</h5>
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_start(formReportArticle) }}
+                        {{ form_row(formReportArticle.Report,{
+                            attr: {
+                                class: 'btn-danger'
+                            }
+                        }) }}
+                        {{ form_end(formReportArticle) }}
+                    </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+        {% endif %}
     <a href="/article/pdf/{{ resultA.slug }}" class="btn btn-primary" style="float: right">generate pdf</a>
+
     <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.email }}</a>
         publié le: {{ resultA.date|date('d-m-Y') }} à {{ resultA.date|date('H:i:s') }}</h4>
-
 
 
 
@@ -84,18 +135,19 @@
 
         <h2><a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.email}}</a></h2>
 
+
         {% if app.user.id is defined %}
-            {% if app.user.id == x.userid.id %}
+            {% if app.user.id == x.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles %}
 
 
                 <div class="float-end">
 
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal2">
+                    <button type="button" class="btn btn-danger ms-2" data-toggle="modal" data-target="#Modal{{ x.id }}">
                         Delete Comment
                     </button>
                 </div>
 
-                <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="Modal{{ x.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -116,7 +168,40 @@
 
 
             {% endif %}
+            <div class="float-end">
+
+                <button type="button" class="btn btn-danger ms-2" data-toggle="modal" data-target="#ModalR{{ x.id }}">
+                    Report
+                </button>
+            </div>
+
+            <div class="modal fade" id="ModalR{{ x.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Report Comment</h5>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h3>Are you sure you want to report this Comment</h3>
+                            <hr>
+                            <p>{{ x.content }}</p>
+                            <hr>
+                            <h5>you can't undo it</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/comment/report/{{ x.id }}/{{ resultA.slug }}" class="btn btn-danger" style="float: right">Report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         {% endif %}
+
+
 
         <p>{{ x.content|raw }}</p>
         <p>écrit le :{{ x.date|date('d-m-Y') }} à {{ x.date|date('H:i:s') }}</p>

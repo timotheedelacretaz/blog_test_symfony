@@ -35,6 +35,9 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $upvote = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $report = null;
+
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $user_id = null;
 
@@ -44,10 +47,14 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article_id', targetEntity: Vote::class)]
     private Collection $votes;
 
+    #[ORM\OneToMany(mappedBy: 'article_id', targetEntity: ReportArticle::class, orphanRemoval: true)]
+    private Collection $reportArticles;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->reportArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +133,18 @@ class Article
         return $this;
     }
 
+    public function getReport(): ?int
+    {
+        return $this->report;
+    }
+
+    public function setReport(int $report): static
+    {
+        $this->report = $report;
+
+        return $this;
+    }
+
 
 
     public function getUserId(): ?User
@@ -194,6 +213,36 @@ class Article
             // set the owning side to null (unless already changed)
             if ($vote->getArticleId() === $this) {
                 $vote->setArticleId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportArticle>
+     */
+    public function getReportArticles(): Collection
+    {
+        return $this->reportArticles;
+    }
+
+    public function addReportArticle(ReportArticle $reportArticle): static
+    {
+        if (!$this->reportArticles->contains($reportArticle)) {
+            $this->reportArticles->add($reportArticle);
+            $reportArticle->setArticleId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportArticle(ReportArticle $reportArticle): static
+    {
+        if ($this->reportArticles->removeElement($reportArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($reportArticle->getArticleId() === $this) {
+                $reportArticle->setArticleId(null);
             }
         }
 

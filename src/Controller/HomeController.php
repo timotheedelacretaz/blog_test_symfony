@@ -20,9 +20,6 @@ class HomeController extends AbstractController
         $recommended = $articleRepository->findAllRecommendedArticle();
 
 
-
-
-
         return $this->render('home/index.html.twig',[
             'result' => $result,
             'recommended' => $recommended,
