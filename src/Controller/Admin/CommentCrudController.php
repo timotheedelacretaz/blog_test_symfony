@@ -26,7 +26,6 @@ class CommentCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('author'),
             TextEditorField::new('content'),
             DateTimeField::new('date')->hideOnForm(),
             IntegerField::new('article_id')->hideOnIndex(),

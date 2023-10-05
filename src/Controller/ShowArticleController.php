@@ -123,7 +123,7 @@ class ShowArticleController extends AbstractController
     public function deleteArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->findOneBy(['slug' => $slug]);
-        if ($this->getUser() == $article)
+        if ($this->getUser() == $article->getUserId() or in_array('ROLE_SUPER_ADMIN',$this->getUser()->getRoles()) or in_array('ROLE_ADMIN',$this->getUser()->getRoles()))
         {
             $entityManager->remove($article);
             $entityManager->flush();
@@ -141,11 +141,11 @@ class ShowArticleController extends AbstractController
     public function deleteComment(EntityManagerInterface $entityManager,string $slug, string $slug2,ArticleRepository $articleRepository,CommentRepository $commentRepository): Response
     {
         $comment = $commentRepository->findOneBy(['id' => $slug]);
-        if ($this->getUser() == $comment)
+        if ($this->getUser() == $comment->getUserId() or in_array('ROLE_SUPER_ADMIN',$this->getUser()->getRoles()) or in_array('ROLE_ADMIN',$this->getUser()->getRoles()))
         {
             $entityManager->remove($comment);
             $entityManager->flush();
-            return $this->redirect('/deletedArticle');
+            return $this->redirect('/article/'.$slug2.'');
         }
         else {
             return $this->redirect('/article/'.$slug2.'');
@@ -161,10 +161,11 @@ class ShowArticleController extends AbstractController
         $report = new ReportComment();
         $report->setCommentId($comment);
         $report->setUserId($user);
+
         if ($reportCommentUser == null){
             $entityManager->persist($report);
+            $entityManager->flush();
         }
-        $entityManager->flush();
         $numberReportArticle = $comment->setReport(count($reportCommentRepository->findBy(['comment_id' => $comment->getId()])));
         $entityManager->persist($numberReportArticle);
         $entityManager->flush();

@@ -198,17 +198,29 @@ class DashboardController extends AbstractDashboardController
     public function deleteAdminComment(EntityManagerInterface $entityManager,string $slug,CommentRepository $commentRepository): Response
     {
         $comment = $commentRepository->findOneBy(['id' => $slug]);
-        $entityManager->remove($comment);
-        $entityManager->flush();
-        return $this->redirect('http://localhost:8000/admin');
+        if (in_array('ROLE_SUPER_ADMIN',$this->getUser()->getRoles()) or in_array('ROLE_ADMIN',$this->getUser()->getRoles()))
+        {
+            $entityManager->remove($comment);
+            $entityManager->flush();
+            return $this->redirect('/admin');
+        }
+        else {
+            return $this->redirect('/');
+        }
     }
     #[Route('/admin/article/delete/{slug}',name: 'delete_admin_article' ,methods: ['GET', 'DELETE'])]
     public function deleteAdminArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
     {
         $article = $articleRepository->findOneBy(['slug' => $slug]);
-        $entityManager->remove($article);
-        $entityManager->flush();
-        return $this->redirect('http://localhost:8000/admin');
+        if (in_array('ROLE_SUPER_ADMIN',$this->getUser()->getRoles()) or in_array('ROLE_ADMIN',$this->getUser()->getRoles()))
+        {
+            $entityManager->remove($article);
+            $entityManager->flush();
+            return $this->redirect('/admin');
+        }
+        else {
+            return $this->redirect('/');
+        }
     }
 
 

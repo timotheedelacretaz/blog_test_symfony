@@ -7,10 +7,9 @@
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
         .recommended {color: #1ea471;float: right}
         .buttonSave {float: right}
-        p {font-}
     </style>
     {% if app.user.id is defined %}
-        {% if app.user.id == resultA.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles %}
+        {% if app.user.id == resultA.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
 
 
 
@@ -74,7 +73,6 @@
     {% endif %}
 
     </div>
-    {% if is_granted('ROLE_VOTER') %}
     <div>
 
 
@@ -120,7 +118,6 @@
 
 
     </div>
-        {% endif %}
     <a href="/article/pdf/{{ resultA.slug }}" class="btn btn-primary" style="float: right">generate pdf</a>
 
     <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.email }}</a>
@@ -137,7 +134,7 @@
 
 
         {% if app.user.id is defined %}
-            {% if app.user.id == x.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles %}
+            {% if app.user.id == x.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
 
 
                 <div class="float-end">
@@ -158,6 +155,8 @@
                             </div>
                             <div class="modal-body">
                                 <p>Are you sure you want to delete your Comment</p>
+                                <hr>
+                                <p>{{ x.content }}</p>
                             </div>
                             <div class="modal-footer">
                                 <a href="/comment/delete/{{ x.id }}/{{ resultA.slug }}" class="btn btn-danger" style="float: right">Delete Comment</a>
