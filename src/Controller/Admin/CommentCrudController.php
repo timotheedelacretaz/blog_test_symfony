@@ -34,6 +34,7 @@ class CommentCrudController extends AbstractCrudController
     /**
      * @param $comment Comment
      */
+
     public function persistEntity(EntityManagerInterface $entityManager, $comment): void
     {
         $comment->setDate(new \DateTime());
