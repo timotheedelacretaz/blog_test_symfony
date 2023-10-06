@@ -24,6 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
+# CRUD created with easyadmin bundle manage the admin dashboard options for the admin dashboard
+# A custom twig is generated to show a Home page for the dashboard with charts and a easy way to delete reported item
 class DashboardController extends AbstractDashboardController
 {
 
@@ -38,6 +40,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+        # find the last time admin visited the dashboard and find all the article and comment created since then
         $id = $this->getUser();
         $user = $this->userRepository->findOneBy(['id' => $id]);
         if ($user->getDateVisitedAdmin() == null)
@@ -55,7 +58,9 @@ class DashboardController extends AbstractDashboardController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-
+        # custom order and count of the item
+        # format the date to month-year, verify if a pushed item as already this date
+        # if true it increase the count of that item by 1 else it push it into an array and init a count to 1
         $format = 'm-Y';
         $r = $this->userRepository->findUserBetweenDate('2023-01-01 01:01:01','2023-12-30 01:01:01' );
         $labels = [];
@@ -71,6 +76,7 @@ class DashboardController extends AbstractDashboardController
             }
 
         }
+        # generate chart for the user created and the article created since the last time admin visited the dashboard
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => $labels,
@@ -102,7 +108,6 @@ class DashboardController extends AbstractDashboardController
                 ],
             ],
         ]);
-
 
         $r2 = $this->articleRepository->findArticleBetweenDate('2023-01-01 01:01:01','2023-12-30 01:01:01' );
         $labels2 = [];
@@ -193,7 +198,7 @@ class DashboardController extends AbstractDashboardController
         return parent::configureAssets()
             ->addWebpackEncoreEntry('app');
     }
-
+    # route to delete a reported comment that  was displayed in the home page of the admin dashboard
     #[Route('/admin/comment/delete/{slug}',name: 'delete_admin_comment' ,methods: ['GET', 'DELETE'])]
     public function deleteAdminComment(EntityManagerInterface $entityManager,string $slug,CommentRepository $commentRepository): Response
     {
@@ -208,6 +213,7 @@ class DashboardController extends AbstractDashboardController
             return $this->redirect('/');
         }
     }
+    # route to delete a reported article that  was displayed in the home page of the admin dashboard
     #[Route('/admin/article/delete/{slug}',name: 'delete_admin_article' ,methods: ['GET', 'DELETE'])]
     public function deleteAdminArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
     {

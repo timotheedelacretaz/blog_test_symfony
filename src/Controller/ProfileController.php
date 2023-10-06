@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
+# controller for the user profile find all article and comment made by the user
+# use a form to modify the description
 class ProfileController extends AbstractController
 {
     #[Route('/profile/{slug}', name: 'app_profile')]

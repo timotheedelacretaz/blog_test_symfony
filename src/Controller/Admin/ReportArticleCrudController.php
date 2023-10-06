@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\ReportArticle;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-
+# CRUD created with easyadmin bundle manage reported article for the admin dashboard
 class ReportArticleCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

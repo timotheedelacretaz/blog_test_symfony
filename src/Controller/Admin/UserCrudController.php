@@ -25,6 +25,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
+# CRUD created with easyadmin bundle manage user for the admin dashboard
+
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(

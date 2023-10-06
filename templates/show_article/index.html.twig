@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Hello ShowArticleController!{% endblock %}
 
+{# render the article and the comment #}
 {% block body %}
     <style>
         .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -8,9 +9,9 @@
         .recommended {color: #1ea471;float: right}
         .buttonSave {float: right}
     </style>
+    {# check if the personn is connected and if they have the right to delete the article #}
     {% if app.user.id is defined %}
         {% if app.user.id == resultA.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
-
 
 
             <div class="float-end">
@@ -50,7 +51,8 @@
     <hr>
     <h6>{{ resultA.content|raw }}</h6>
 
-
+    {# check if the personn is connected and if they have the right to upvote article.
+    article can be upvote only by ROLE_VOTER #}
     <div class="buttonSave ms-2">
     {% if is_granted('ROLE_VOTER') %}
         {{ form_start(formVote) }}
@@ -76,7 +78,7 @@
     <div>
 
 
-
+        {# render the report button  #}
         <div class="float-end">
 
             <button type="button" class="btn btn-danger ms-2" data-toggle="modal" data-target="#Modal4">
@@ -120,20 +122,21 @@
     </div>
     <a href="/article/pdf/{{ resultA.slug }}" class="btn btn-primary" style="float: right">generate pdf</a>
 
-    <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.email }}</a>
+    <h4>écrit par: <a href="http://localhost:8000/profile/{{ resultA.userid.id }}">{{ resultA.userid.username }}</a>
         publié le: {{ resultA.date|date('d-m-Y') }} à {{ resultA.date|date('H:i:s') }}</h4>
 
 
 
-
+        {# render the comment #}
     <h1>Commentaire</h1>
     {% for x in resultC %}
 
 
-        <h2><a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.email}}</a></h2>
+        <h2><a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.username}}</a></h2>
 
-
+        {# check if the person is connected #}
         {% if app.user.id is defined %}
+            {# generate the delete button if the user is the author of the comment or if the user has the role  #}
             {% if app.user.id == x.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
 
 
@@ -167,6 +170,7 @@
 
 
             {% endif %}
+            {# generate the report button #}
             <div class="float-end">
 
                 <button type="button" class="btn btn-danger ms-2" data-toggle="modal" data-target="#ModalR{{ x.id }}">
@@ -207,11 +211,11 @@
 
     {% endfor %}
 
-
+        {# check if the person is connected. if true render the comment form else tell the user to connect to read article #}
     {% if is_granted('ROLE_USER') %}
         {{ form_start(formComment) }}
         {{ form_end(formComment) }}
     {% else %}
-    <h2>{{ formComment }}</h2>
+    <a href="http://localhost:8000/login"><h5>{{ formComment }}</h5></a>
     {% endif %}
 {% endblock %}

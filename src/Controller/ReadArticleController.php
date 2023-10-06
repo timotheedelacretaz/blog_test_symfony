@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+# controller to show all article made
 class ReadArticleController extends AbstractController
 {
     #[Route('/read/article', name: 'app_read_article')]

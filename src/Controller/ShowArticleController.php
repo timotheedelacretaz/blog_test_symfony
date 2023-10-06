@@ -24,11 +24,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 
+# controller that generate the article and the comment
 class ShowArticleController extends AbstractController
 {
     #[Route('/article/{slug}', name: 'show_article')]
     public function index(ArticleRepository $articleRepository,ReportCommentRepository $reportCommentRepository,ReportArticleRepository $reportArticleRepository,CommentRepository $commentRepository,VoteRepository $voteRepository, string $slug,Request $request,EntityManagerInterface $entityManager): Response
     {
+        # find all article and comment
         $resultA = $articleRepository->findOneBy(['slug' => $slug]);
 
         $resultC = $commentRepository->findBy(
@@ -38,9 +40,30 @@ class ShowArticleController extends AbstractController
         $user = $this->getUser();
         $voteUser = $voteRepository->findIfUserVoted($user,$resultA);
         $reportArticleUser = $reportArticleRepository->findIfUserReportedArticle($user,$resultA);
+        # the system for reporting article which generate a form that add 1 to a report count in the article
+        # user can report once and they cannot undo it
+        $reportArticle = new ReportArticle();
+        $reportArticle->setUserId($user);
+        $reportArticle->setArticleId($resultA);
+        $formReportArticle = $this->createForm(ReportArticleType::class,$reportArticle);
+        $formReportArticle->handleRequest($request);
+        if ($formReportArticle->isSubmitted() && $formReportArticle->isValid()) {
+            $reportArticle = $formReportArticle->getData();
+            if ($reportArticleUser == null)
+            {
+                $entityManager->persist($reportArticle);
+            }
+            $entityManager->flush();
+            $numberReportArticle = $resultA->setReport(count($reportArticleRepository->findBy(['article_id' => $resultA->getId()])));
+            $entityManager->persist($numberReportArticle);
+            $entityManager->flush();
+            return $this->redirect('/article/'.$resultA->getSlug().'');
+        }
 
-
+        # verify if the person is logged
         if ($this->isGranted('ROLE_USER')){
+            # the system to upvote article
+            # the user can upvote once an article and they can undo it, upvote add 1 to the upvote count in the article
             $vote = new Vote();
             $vote->setUserId($user);
             $vote->setArticleId($resultA);
@@ -61,28 +84,7 @@ class ShowArticleController extends AbstractController
                 $entityManager->flush();
                 return $this->redirect('/article/'.$resultA->getSlug().'');
             }
-
-            $reportArticle = new ReportArticle();
-            $reportArticle->setUserId($user);
-            $reportArticle->setArticleId($resultA);
-            $formReportArticle = $this->createForm(ReportArticleType::class,$reportArticle);
-            $formReportArticle->handleRequest($request);
-            if ($formReportArticle->isSubmitted() && $formReportArticle->isValid()) {
-                $reportArticle = $formReportArticle->getData();
-                if ($reportArticleUser == null)
-                {
-                    $entityManager->persist($reportArticle);
-                }
-                $entityManager->flush();
-                $numberReportArticle = $resultA->setReport(count($reportArticleRepository->findBy(['article_id' => $resultA->getId()])));
-                $entityManager->persist($numberReportArticle);
-                $entityManager->flush();
-                return $this->redirect('/article/'.$resultA->getSlug().'');
-            }
-
-
-
-
+            # the system that generate the comment form
             $comment = new Comment();
             $comment->setArticleId($resultA);
             $comment->setUserId($user);
@@ -98,9 +100,11 @@ class ShowArticleController extends AbstractController
             }
         }
         else {
+            # if the user is not defined i push a message to tell the person to login
+            # the formVote def is just to prevent an error
             $formComment = 'You have to be logged to write comment';
             $formVote = '';
-            $formReportArticle = '';
+
         }
 
 
@@ -119,6 +123,8 @@ class ShowArticleController extends AbstractController
             'reportArticleUser' => $reportArticleUser,
         ]);
     }
+    # route to delete an article
+    # the route check if the user is the one who made the article or if he as a roles that justify access
     #[Route('/article/delete/{slug}',name: 'delete_article' ,methods: ['GET', 'DELETE'])]
     public function deleteArticle(EntityManagerInterface $entityManager, string $slug,ArticleRepository $articleRepository): Response
     {
@@ -136,7 +142,8 @@ class ShowArticleController extends AbstractController
     }
 
 
-
+    # route to delete an comment
+    # the route check if the user is the one who made the comment or if he as a roles that justify access
     #[Route('/comment/delete/{slug}/{slug2}',name: 'delete_comment' ,methods: ['GET', 'DELETE'])]
     public function deleteComment(EntityManagerInterface $entityManager,string $slug, string $slug2,ArticleRepository $articleRepository,CommentRepository $commentRepository): Response
     {
@@ -151,7 +158,8 @@ class ShowArticleController extends AbstractController
             return $this->redirect('/article/'.$slug2.'');
         }
     }
-
+    # route to report an comment
+    # the route check if the user is the one who made the comment or if he as a roles that justify access
     #[Route('/comment/report/{slug}/{slug2}',name: 'report_comment' ,methods: ['GET'])]
     public function reportComment(EntityManagerInterface $entityManager,ReportCommentRepository $reportCommentRepository,string $slug, string $slug2,CommentRepository $commentRepository): Response
     {
@@ -172,7 +180,7 @@ class ShowArticleController extends AbstractController
         return $this->redirect('/article/'.$slug2.'');
     }
 
-
+    # route to generate a pdf out of an article
     #[Route('/article/pdf/{slug}',name: 'pdf' ,methods: ['GET'])]
     public function pdf(string $slug,ArticleRepository $articleRepository): Response
     {

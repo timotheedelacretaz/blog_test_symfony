@@ -2,6 +2,7 @@
 
 {% block title %}Hello ProfileController!{% endblock %}
 
+{# render the profile of the user#}
 {% block body %}
 <style>
     .article {display: flex;flex-wrap: wrap;flex-direction: row;justify-content: space-around;align-items: center}
@@ -11,7 +12,7 @@
 </style>
 
 <div class="example-wrapper">
-
+{# check if the user that see this page is the same user as the profile #}
     {% if app.user.id is defined %}
         {% if app.user.id == verify %}
             <div class="float-end ms-2">
@@ -21,7 +22,6 @@
                 </button>
             </div>
 
-            <!-- Modal -->
             {{ form_start(formUser) }}
             <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -78,6 +78,7 @@
 
 
     <h2>{{ user.username }}</h2>
+    {# if the user has not set a description and/or work it don't generate them #}
     {% if user.work is not null %}
         <p>work : {{ user.work }}</p>
     {% endif %}
@@ -91,7 +92,7 @@
 
 
 
-
+    {# check if the user has article and show all the article made by the user#}
     {% if article != [] %}
     <h2>article:</h2>
     <div class="article">

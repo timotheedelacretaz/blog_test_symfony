@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-
+# controller to create article
 class CreateArticleController extends AbstractController
 {
     #[Route('/create/article', name: 'app_create_article')]

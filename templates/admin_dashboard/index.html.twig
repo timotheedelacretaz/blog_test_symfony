@@ -1,9 +1,8 @@
 {% extends '@!EasyAdmin/layout.html.twig' %}
 
 
-
+{# generate the view of the admin dashboard home page #}
 {% block sidebar %}
-
     <header class="main-header">
         <nav class="navbar" role="navigation">
             <div id="header-logo">
@@ -86,7 +85,7 @@
 {% endblock %}
 
 {% block main %}
-
+    {# generate chart and indicate the number of registration and article created since the last visit of the admin #}
     <section class="main" >
         <article class="content">
             <section class="content-header">
@@ -128,6 +127,7 @@
             </section>
         </article>
         <article>
+            {# generate 2 table for the article reported and the comment reported #}
             {% if 0 < rA|length  %}
                 <section>
                     <article class="content" >
@@ -253,15 +253,5 @@
                 </section>
             {% endif %}
         </article>
-
     </section>
-
-
-
-
-
-
-
-
-
 {% endblock %}

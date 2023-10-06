@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 
+# CRUD created with easyadmin bundle manage the vote made to article for the admin dashboard
 class VoteCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

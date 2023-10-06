@@ -13,6 +13,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+# CRUD created with easyadmin bundle manage article for the admin dashboard
+
 class ArticleCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
