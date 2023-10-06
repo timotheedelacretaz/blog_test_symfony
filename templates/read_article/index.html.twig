@@ -4,17 +4,12 @@
 
 {# render all the article made, recommended article have a green border #}
 {% block body %}
-<style>
-    .article {display: flex;flex-wrap: wrap;flex-direction: row;justify-content: space-around;align-items: center}
-    .card {margin: 6px;}
-    .recommendedCard {border-color: #1ea471;border-width: 2px}
-</style>
-<div class="article">
+<div class="d-flex flex-row flex-wrap justify-content-around align-content-center">
     {% for x in result %}
         {% if x.upvote >=3 %}
-            <div class="card recommendedCard" style="width: 18rem;">
+            <div class="card recommendedCard" style="width: 18rem;border-color: #1ea471;border-width: 2px">
         {% else %}
-                <div class="card" style="width: 18rem;">
+                <div class="card m-2" style="width: 18rem;">
         {% endif %}
             <div class="card-body">
                 <h5 class="card-title ">{{ x.title }}</h5>

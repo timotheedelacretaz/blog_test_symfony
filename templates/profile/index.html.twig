@@ -4,14 +4,9 @@
 
 {# render the profile of the user#}
 {% block body %}
-<style>
-    .article {display: flex;flex-wrap: wrap;flex-direction: row;justify-content: space-around;align-items: center}
-    .card {margin: 6px;}
-    .recommendedCard {border-color: #1ea471;border-width: 2px}
-    .descriptionText {margin: 8px}
-</style>
 
-<div class="example-wrapper">
+
+<div>
 {# check if the user that see this page is the same user as the profile #}
     {% if app.user.id is defined %}
         {% if app.user.id == verify %}
@@ -86,7 +81,7 @@
     <p>nombre d'article: {{ article|length }}</p>
     <p>nombre de commentaire: {{ comment|length }}</p>
     {% if user.content is not null %}
-        <div class="border rounded"><p class="descriptionText">{{ user.content }}</p></div>
+        <div class="border rounded"><p class="m-3">{{ user.content }}</p></div>
     {% endif %}
 
 
@@ -95,12 +90,12 @@
     {# check if the user has article and show all the article made by the user#}
     {% if article != [] %}
     <h2>article:</h2>
-    <div class="article">
+    <div class="d-flex flex-row flex-wrap justify-content-around align-content-center">
         {% for x in article %}
             {% if x.upvote >=3 %}
-            <div class="card recommendedCard" style="width: 18rem;">
+            <div class="card recommendedCard" style="width: 18rem;border-color: #1ea471;border-width: 2px">
                 {% else %}
-                <div class="card" style="width: 18rem;">
+                <div class="card m-2" style="width: 18rem;">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ x.title }}</h5>

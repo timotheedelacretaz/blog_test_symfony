@@ -8,15 +8,8 @@
     and the 3 latest article
 #}
 {% block body %}
-    <style>
-        .homepage {display: flex; flex-direction: row}
-        .welcome {margin-right: 10px}
-        .recommendedArticle {float: right}
-        .latestArticle {float: right}
-        .recommendedCard {border-color: #1ea471;border-width: 2px}
-    </style>
-    <div class="homepage ">
-        <div class="welcome">
+    <div class="flex-row d-flex">
+        <div class="me-4">
             <h2>Welcome to tim Blog</h2>
 
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -49,14 +42,14 @@
                 efficitur fermentum lorem. Suspendisse arcu mauris, eleifend ut magna sed, sollicitudin
                 feugiat turpis.</p>
         </div>
-        <div class="article">
-            <div class="recommendedArticle">
+        <section>
+            <article class="float-end">
                 {% if 0 < recommended|length  %}
                     <h1>
                         Recommended article
                     </h1>
                     {% for x in recommended %}
-                        <div class="card recommendedCard" style="width: 20rem;">
+                        <div class="card recommendedCard" style="width: 20rem;border-color: #1ea471;border-width: 2px">
                             <div class="card-body ">
                                 <h5 class="card-title">{{ x.title }}</h5>
                                 <h6 class="card-text">{{ x.chapeau|raw }}</h6>
@@ -66,8 +59,8 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-            </div>
-            <div class="latestArticle">
+            </article>
+            <article class="float-end">
                 {% if result|length >2 %}
                     <h1>
                         Latest article
@@ -83,8 +76,8 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-            </div>
-        </div>
+            </article>
+        </section>
 
     </div>
 

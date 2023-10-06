@@ -3,12 +3,6 @@
 
 {# render the article and the comment #}
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-        .recommended {color: #1ea471;float: right}
-        .buttonSave {float: right}
-    </style>
     {# check if the personn is connected and if they have the right to delete the article #}
     {% if app.user.id is defined %}
         {% if app.user.id == resultA.userid.id or 'ROLE_SUPER_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
@@ -44,7 +38,7 @@
         {% endif %}
     {% endif %}
     {% if resultA.upvote >= 3 %}
-        <h2 class="recommended">Recommended</h2>
+        <h2 class="recommended" style="color: #1ea471;float: right">Recommended</h2>
     {% endif %}
     <h1>{{ resultA.title }}</h1>
     <h6>{{ resultA.chapeau|raw }}</h6>
@@ -53,7 +47,7 @@
 
     {# check if the personn is connected and if they have the right to upvote article.
     article can be upvote only by ROLE_VOTER #}
-    <div class="buttonSave ms-2">
+    <div class="buttonSave float-end ms-2">
     {% if is_granted('ROLE_VOTER') %}
         {{ form_start(formVote) }}
         {% if voteUser is null %}
