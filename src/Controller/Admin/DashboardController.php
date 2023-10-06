@@ -51,7 +51,7 @@ class DashboardController extends AbstractDashboardController
             $d =  $user->getDateVisitedAdmin();
         }
         $a = $this->articleRepository->findAllGreaterThanDate($d);
-        $u = $this->articleRepository->findAllGreaterThanDate($d);
+        $u = $this->userRepository->findAllGreaterThanDate($d);
 
         $date = new \DateTime();
         $user->setDateVisitedAdmin($date);

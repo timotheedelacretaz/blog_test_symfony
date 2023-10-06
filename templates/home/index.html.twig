@@ -49,11 +49,11 @@
                         Recommended article
                     </h1>
                     {% for x in recommended %}
-                        <div class="card recommendedCard" style="width: 20rem;border-color: #1ea471;border-width: 2px">
+                        <div class="card mb-4 recommendedCard" style="width: 20rem;border-color: #1ea471;border-width: 2px">
                             <div class="card-body ">
                                 <h5 class="card-title">{{ x.title }}</h5>
                                 <h6 class="card-text">{{ x.chapeau|raw }}</h6>
-                                <p>écrit le {{ x.date|date('d-m-Y') }} par <a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.username }}</a></p>
+                                <p>written the {{ x.date|date('d-m-Y') }} by <a href="http://localhost:8000/profile/{{ x.userid.id }}">{{ x.userid.username }}</a></p>
                                 <a href="http://localhost:8000/article/{{ x.slug }}" class="btn btn-primary">Read more</a>
                             </div>
                         </div>
@@ -66,11 +66,11 @@
                         Latest article
                     </h1>
                     {% for x in 0..2 %}
-                        <div class="card" style="width: 20rem">
+                        <div class="card mb-4" style="width: 20rem">
                             <div class="card-body">
                                 <h5 class="card-title">{{ result[x].title }}</h5>
                                 <h6 class="card-text">{{ result[x].chapeau|raw }}</h6>
-                                <p>écrit le {{ result[x].date|date('d-m-Y') }} par <a href="http://localhost:8000/profile/{{ result[x].userid.id }}">{{ result[x].userid.username }}</a></p>
+                                <p>written the {{ result[x].date|date('d-m-Y') }} by <a href="http://localhost:8000/profile/{{ result[x].userid.id }}">{{ result[x].userid.username }}</a></p>
                                 <a href="http://localhost:8000/article/{{ result[x].slug }}" class="btn btn-primary">Read more</a>
                             </div>
                         </div>

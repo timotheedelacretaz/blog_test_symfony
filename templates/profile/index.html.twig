@@ -7,7 +7,8 @@
 
 
 <div>
-{# check if the user that see this page is the same user as the profile #}
+{# check if the user that see this page is the same user as the profile
+if true render the edit and delete account button#}
     {% if app.user.id is defined %}
         {% if app.user.id == verify %}
             <div class="float-end ms-2">
@@ -77,9 +78,9 @@
     {% if user.work is not null %}
         <p>work : {{ user.work }}</p>
     {% endif %}
-    <p>A rejoint le site le {{ user.date|date('d-m-Y') }}</p>
-    <p>nombre d'article: {{ article|length }}</p>
-    <p>nombre de commentaire: {{ comment|length }}</p>
+    <p>has joined the {{ user.date|date('d-m-Y') }}</p>
+    <p>number of article: {{ article|length }}</p>
+    <p>number of comment: {{ comment|length }}</p>
     {% if user.content is not null %}
         <div class="border rounded"><p class="m-3">{{ user.content }}</p></div>
     {% endif %}
@@ -100,7 +101,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ x.title }}</h5>
                     <p class="card-text" >{{ x.chapeau|raw }}</p>
-                    <p>écrit le {{ x.date|date('d-m-Y') }}</p>
+                    <p>written the {{ x.date|date('d-m-Y') }}</p>
                     <a href="http://localhost:8000/article/{{ x.slug }}" class="btn btn-primary">Read more</a>
                 </div>
             </div>
